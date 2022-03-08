@@ -129,14 +129,17 @@ function claimANY(say, body) {
   if (motd > 0) available.push('motd');
   if (sotd > 0) available.push('sotd');
   
-  var choice = Math.random() * available.length-1;
-  
-  if (available[choice] === 'motd') {
-    claimMOTD(say, body);
-  } else if (available[choice] === 'sotd') {
-    claimSOTD(say, body);
-  } else if (available[choice] === 'fd') {
-    claimFD(say, body);
+  if (available.length > 0) {
+    var choice = Math.floor(Math.random()) * available.length-1;
+    if (available[choice] === 'motd') {
+      claimMOTD(say, body);
+    } else if (available[choice] === 'sotd') {
+      claimSOTD(say, body);
+    } else if (available[choice] === 'fd') {
+      claimFD(say, body);
+    }
+  } else {
+    say("Oh no! No meals available right now, try again later ");
   }
 }
 
