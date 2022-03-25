@@ -21,6 +21,7 @@ var avaidMotd = [];
 var avaidSotd = [];
 var avaidFd = [];
 var claimedMeals = [];
+var hasSeenMessageToday = false;
 
 // MARK: Actions
 app.action("donate_motd", ({ event, say, body }) => {
@@ -199,7 +200,7 @@ app.action("meal-type-selected-take", async({ body, ack, say, action }) => {
     await ack();
     // await say(`<@${body.user.id}> you lazy fuck`);
     var value = action.selected_option.value;
-    await say(JSON.stringify(action, null, 2));
+
     if (value === 'value-motd') {
         claimMOTD(say, body, action);
     } else if (value === 'value-sotd') {
@@ -322,6 +323,7 @@ app.message("purge", async({ event, say }) => {
     avaidSotd = [];
     avaidFd = [];
     claimedMeals = [];
+    hasSeenMessageToday = false;
 });
 
 app.message("setPurge", async({ event, say }) => {
@@ -330,6 +332,7 @@ app.message("setPurge", async({ event, say }) => {
         avaidSotd = [];
         avaidFd = [];
         claimedMeals = [];
+        hasSeenMessageToday = false;
     });
 });
 
@@ -453,36 +456,40 @@ app.command("donate", async({ event, say }) => {
 // MARK: Events
 
 app.event("app_home_opened", ({ event, say }) => {
+  if (!hasSeenMessageToday) {
+    hasSeenMessageToday = true;
     say({
-        blocks: [{
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Feed the hungry",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "actionFeed",
-                }, ],
-            },
-            {
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "I am the hungry",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "actionEat",
-                }, ],
-            },
-        ],
-        text: `hungry?`,
-    });
+      blocks: [{
+              type: "actions",
+              elements: [{
+                  type: "button",
+                  text: {
+                      type: "plain_text",
+                      text: "Feed the hungry",
+                      emoji: true,
+                  },
+                  value: "click_me_123",
+                  action_id: "actionFeed",
+              }, ],
+          },
+          {
+              type: "actions",
+              elements: [{
+                  type: "button",
+                  text: {
+                      type: "plain_text",
+                      text: "I am the hungry",
+                      emoji: true,
+                  },
+                  value: "click_me_123",
+                  action_id: "actionEat",
+              }, ],
+          },
+      ],
+      text: `hungry?`,
+  });
+  } 
+ 
 });
 
 (async() => {
