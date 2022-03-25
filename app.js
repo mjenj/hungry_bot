@@ -2,10 +2,10 @@
 const { App } = require("@slack/bolt");
 
 const app = new App({
-  token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-  socketMode: true,
-  appToken: process.env.SLACK_APP_TOKEN,
+    token: process.env.SLACK_BOT_TOKEN,
+    signingSecret: process.env.SLACK_SIGNING_SECRET,
+    socketMode: true,
+    appToken: process.env.SLACK_APP_TOKEN,
 });
 
 //Add code here
@@ -18,437 +18,413 @@ var avaidFd = [];
 var claimedMeals = [];
 
 app.action("donate_motd", ({ event, say, body }) => {
-  avaidMotd.push({
-    owner: body.user.id,
-    type: "MOTD",
-  });
-  console.log(avaidMotd);
+    avaidMotd.push({
+        owner: body.user.id,
+        type: "MOTD",
+    });
+    console.log(avaidMotd);
 });
 
 app.action("donate_sotd", ({ event, say, body }) => {
-  avaidSotd.push({
-    owner: body.user.id,
-    type: "SOTD",
-  });
-  console.log(avaidSotd);
+    avaidSotd.push({
+        owner: body.user.id,
+        type: "SOTD",
+    });
+    console.log(avaidSotd);
 });
 
 app.action("donate_fd", ({ event, say, body }) => {
-  avaidFd.push({
-    owner: body.user.id,
-    type: "FD",
-  });
-  console.log(avaidFd);
+    avaidFd.push({
+        owner: body.user.id,
+        type: "FD",
+    });
+    console.log(avaidFd);
 });
 
-app.action("claim_sotd", async ({ event, say, body }) => {
-  if (avaidSotd.length > 0) {
-    var meal = avaidSotd.shift();
-    meal["claimer"] = body.user.id;
-    await say("You got a SOTD from " + `<@${meal.owner}>`);
-    claimedMeals.push(meal);
-  }
+app.action("claim_sotd", async({ event, say, body }) => {
+    if (avaidSotd.length > 0) {
+        var meal = avaidSotd.shift();
+        meal["claimer"] = body.user.id;
+        await say("You got a SOTD from " + `<@${meal.owner}>`);
+        claimedMeals.push(meal);
+    }
 });
 
-app.action("claim_motd", async ({ event, say, body }) => {
-  if (avaidMotd.length > 0) {
-    var meal = avaidMotd.shift();
-    meal["claimer"] = body.user.id;
-    await say("You got a MOTD from " + `<@${meal.owner}>`);
-    claimedMeals.push(meal);
-  }
+app.action("claim_motd", async({ event, say, body }) => {
+    if (avaidMotd.length > 0) {
+        var meal = avaidMotd.shift();
+        meal["claimer"] = body.user.id;
+        await say("You got a MOTD from " + `<@${meal.owner}>`);
+        claimedMeals.push(meal);
+    }
 });
 
-app.action("claim_fd", async ({ event, say, body }) => {
-  if (avaidFd.length > 0) {
-    var meal = avaidFd.shift();
-    meal["claimer"] = body.user.id;
-    await say("You got a FD from " + `<@${meal.owner}>`);
-    claimedMeals.push(meal);
-  }
+app.action("claim_fd", async({ event, say, body }) => {
+    if (avaidFd.length > 0) {
+        var meal = avaidFd.shift();
+        meal["claimer"] = body.user.id;
+        await say("You got a FD from " + `<@${meal.owner}>`);
+        claimedMeals.push(meal);
+    }
 });
 
 function giveMOTD(say, body) {
-  avaidMotd.push({
-    owner: body.user.id,
-    type: "MOTD",
-  });
-  say("Thank you for your donation, you've saved a starving african");
+    avaidMotd.push({
+        owner: body.user.id,
+        type: "MOTD",
+    });
+    say("Thank you for your donation, you've saved a starving african");
 }
 
 function giveSOTD(say, body) {
-  avaidSotd.push({
-    owner: body.user.id,
-    type: "SOTD",
-  });
-  say("Thank you for your donation, you've saved a starving african");
+    avaidSotd.push({
+        owner: body.user.id,
+        type: "SOTD",
+    });
+    say("Thank you for your donation, you've saved a starving african");
 }
 
 function giveFD(say, body) {
-  avaidFd.push({
-    owner: body.user.id,
-    type: "FD",
-  });
-  say("Thank you for your donation, you've saved a starving african");
+    avaidFd.push({
+        owner: body.user.id,
+        type: "FD",
+    });
+    say("Thank you for your donation, you've saved a starving african");
 }
 
 function claimMOTD(say, body) {
-  if (avaidMotd.length > 0) {
-    var meal = avaidMotd.shift();
-    meal["claimer"] = body.user.id;
-    say("You got a MOTD from " + `<@${meal.owner}>`);
-    claimedMeals.push(meal);
-  }
+    if (avaidMotd.length > 0) {
+        var meal = avaidMotd.shift();
+        meal["claimer"] = body.user.id;
+        say("You got a MOTD from " + `<@${meal.owner}>`);
+        claimedMeals.push(meal);
+    }
 }
 
 function claimSOTD(say, body) {
-  if (avaidSotd.length > 0) {
-    var meal = avaidSotd.shift();
-    meal["claimer"] = body.user.id;
-    say("You got a SOTD from " + `<@${meal.owner}>`);
-    claimedMeals.push(meal);
-  }
+    if (avaidSotd.length > 0) {
+        var meal = avaidSotd.shift();
+        meal["claimer"] = body.user.id;
+        say("You got a SOTD from " + `<@${meal.owner}>`);
+        claimedMeals.push(meal);
+    }
 }
 
 function claimFD(say, body) {
-  if (avaidFd.length > 0) {
-    var meal = avaidFd.shift();
-    meal["claimer"] = body.user.id;
-    say("You got a FD from " + `<@${meal.owner}>`);
-    claimedMeals.push(meal);
-  }
+    if (avaidFd.length > 0) {
+        var meal = avaidFd.shift();
+        meal["claimer"] = body.user.id;
+        say("You got a FD from " + `<@${meal.owner}>`);
+        claimedMeals.push(meal);
+    }
 }
 
 function claimANY(say, body) {
-  var fd = avaidFd.length;
-  var motd = avaidMotd.length;
-  var sotd = avaidSotd.length;
-  
-  var available = [];
-  if (fd > 0) available.push('fd');
-  if (motd > 0) available.push('motd');
-  if (sotd > 0) available.push('sotd');
-  
-  if (available.length > 0) {
-    var choice = Math.floor(Math.random()) * available.length-1;
-    if (available[choice] === 'motd') {
-      claimMOTD(say, body);
-    } else if (available[choice] === 'sotd') {
-      claimSOTD(say, body);
-    } else if (available[choice] === 'fd') {
-      claimFD(say, body);
+    var fd = avaidFd.length;
+    var motd = avaidMotd.length;
+    var sotd = avaidSotd.length;
+
+    var available = [];
+    if (fd > 0) available.push('fd');
+    if (motd > 0) available.push('motd');
+    if (sotd > 0) available.push('sotd');
+
+    if (available.length > 0) {
+        var choice = Math.floor(Math.random()) * available.length - 1;
+        if (available[choice] === 'motd') {
+            claimMOTD(say, body);
+        } else if (available[choice] === 'sotd') {
+            claimSOTD(say, body);
+        } else if (available[choice] === 'fd') {
+            claimFD(say, body);
+        }
+    } else {
+        say("Oh no! No meals available right now, try again later ");
     }
-  } else {
-    say("Oh no! No meals available right now, try again later ");
-  }
 }
 
-app.message("purge", async ({ event, say }) => {
-  avaidMotd = [];
-  avaidSotd = [];
-  avaidFd = [];
-  claimedMeals = [];
+app.message("purge", async({ event, say }) => {
+    avaidMotd = [];
+    avaidSotd = [];
+    avaidFd = [];
+    claimedMeals = [];
 });
 
-app.command("donate", async ({ event, say }) => {
-  await say({
-    blocks: [
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Donate MOTD",
-              emoji: true,
+app.command("donate", async({ event, say }) => {
+    await say({
+        blocks: [{
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Donate MOTD",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "donate_motd",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "donate_motd",
-          },
-        ],
-      },
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Donate SOTD",
-              emoji: true,
+            {
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Donate SOTD",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "donate_sotd",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "donate_sotd",
-          },
-        ],
-      },
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Donate FD",
-              emoji: true,
+            {
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Donate FD",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "donate_fd",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "donate_fd",
-          },
         ],
-      },
-    ],
-    text: `hungry?`,
-  });
+        text: `hungry?`,
+    });
 });
 
-app.message("claim", async ({ event, say }) => {
-  await say("there are MOTD " + avaidMotd.length);
-  await say("there are SOTD " + avaidSotd.length);
-  await say("there are FD " + avaidFd.length);
-  await say({
-    blocks: [
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Claim MOTD",
-              emoji: true,
+app.message("claim", async({ event, say }) => {
+    await say("there are MOTD " + avaidMotd.length);
+    await say("there are SOTD " + avaidSotd.length);
+    await say("there are FD " + avaidFd.length);
+    await say({
+        blocks: [{
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Claim MOTD",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "claim_motd",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "claim_motd",
-          },
-        ],
-      },
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Claim SOTD",
-              emoji: true,
+            {
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Claim SOTD",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "claim_sotd",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "claim_sotd",
-          },
-        ],
-      },
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Claim FD",
-              emoji: true,
+            {
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Claim FD",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "claim_fd",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "claim_fd",
-          },
         ],
-      },
-    ],
-    text: `hungry?`,
-  });
+        text: `hungry?`,
+    });
 });
 
 app.event("app_home_opened", ({ event, say }) => {
-  say({
-    blocks: [
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Feed the hungry",
-              emoji: true,
+    say({
+        blocks: [{
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "Feed the hungry",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "actionFeed",
+                }, ],
             },
-            value: "click_me_123",
-            action_id: "actionFeed",
-          },
+            {
+                type: "actions",
+                elements: [{
+                    type: "button",
+                    text: {
+                        type: "plain_text",
+                        text: "I am the hungry",
+                        emoji: true,
+                    },
+                    value: "click_me_123",
+                    action_id: "actionEat",
+                }, ],
+            },
         ],
-      },
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
+        text: `hungry?`,
+    });
+});
+
+app.action("actionFeed", async({ body, ack, say }) => {
+    await ack();
+    await say({
+        blocks: [{
+            type: "section",
             text: {
-              type: "plain_text",
-              text: "I am the hungry",
-              emoji: true,
+                type: "mrkdwn",
+                text: "Thank you for feeding a hungry Skynamite with a: ",
             },
-            value: "click_me_123",
-            action_id: "actionEat",
-          },
-        ],
-      },
-    ],
-    text: `hungry?`,
-  });
+            accessory: {
+                type: "static_select",
+                placeholder: {
+                    type: "plain_text",
+                    text: "Options",
+                    emoji: true,
+                },
+                options: [{
+                        text: {
+                            type: "plain_text",
+                            text: "MOTD",
+                            emoji: true,
+                        },
+                        value: "value-motd",
+                    },
+                    {
+                        text: {
+                            type: "plain_text",
+                            text: "SOTD",
+                            emoji: true,
+                        },
+                        value: "value-sotd",
+                    },
+                    {
+                        text: {
+                            type: "plain_text",
+                            text: "FD",
+                            emoji: true,
+                        },
+                        value: "value-fd",
+                    },
+                ],
+                action_id: "meal-type-selected-give",
+            },
+        }, ],
+        text: "home",
+    });
 });
 
-app.action("actionFeed", async ({ body, ack, say }) => {
-  await ack();
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "Thank you for feeding a hungry Skynamite with a: ",
-        },
-        accessory: {
-          type: "static_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Options",
-            emoji: true,
-          },
-          options: [
-            {
-              text: {
-                type: "plain_text",
-                text: "MOTD",
-                emoji: true,
-              },
-              value: "value-motd",
+app.action("actionEat", async({ body, ack, say }) => {
+    await ack();
+    // await say(`<@${body.user.id}> you lazy fuck`);
+    await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's and " + avaidFd.length + " FD's");
+    await say({
+        blocks: [{
+            type: "section",
+            text: {
+                type: "mrkdwn",
+                text: "Beggars CAN be choosers",
             },
-            {
-              text: {
-                type: "plain_text",
-                text: "SOTD",
-                emoji: true,
-              },
-              value: "value-sotd",
+            accessory: {
+                type: "static_select",
+                placeholder: {
+                    type: "plain_text",
+                    text: "Options",
+                    emoji: true,
+                },
+                options: [{
+                        text: {
+                            type: "plain_text",
+                            text: "MOTD",
+                            emoji: true,
+                        },
+                        value: "value-motd",
+                    },
+                    {
+                        text: {
+                            type: "plain_text",
+                            text: "SOTD",
+                            emoji: true,
+                        },
+                        value: "value-sotd",
+                    },
+                    {
+                        text: {
+                            type: "plain_text",
+                            text: "FD",
+                            emoji: true,
+                        },
+                        value: "value-fd",
+                    },
+                    {
+                        text: {
+                            type: "plain_text",
+                            text: "I'll take anything",
+                            emoji: true,
+                        },
+                        value: "value-any",
+                    },
+                ],
+                action_id: "meal-type-selected-take",
             },
-            {
-              text: {
-                type: "plain_text",
-                text: "FD",
-                emoji: true,
-              },
-              value: "value-fd",
-            },
-          ],
-          action_id: "meal-type-selected-give",
-        },
-      },
-    ],
-    text: "home",
-  });
+        }, ],
+        text: "home",
+    });
 });
 
-app.action("actionEat", async ({ body, ack, say }) => {
-  await ack();
-  // await say(`<@${body.user.id}> you lazy fuck`);
-  await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's and " + avaidFd.length + " FD's");
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "Beggars CAN be choosers",
-        },
-        accessory: {
-          type: "static_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Options",
-            emoji: true,
-          },
-          options: [
-            {
-              text: {
-                type: "plain_text",
-                text: "MOTD",
-                emoji: true,
-              },
-              value: "value-motd",
-            },
-            {
-              text: {
-                type: "plain_text",
-                text: "SOTD",
-                emoji: true,
-              },
-              value: "value-sotd",
-            },
-            {
-              text: {
-                type: "plain_text",
-                text: "FD",
-                emoji: true,
-              },
-              value: "value-fd",
-            },
-            {
-              text: {
-                type: "plain_text",
-                text: "I'll take anything",
-                emoji: true,
-              },
-              value: "value-any",
-            },
-          ],
-          action_id: "meal-type-selected-take",
-        },
-      },
-    ],
-    text: "home",
-  });
+app.action("meal-type-selected-take", async({ body, ack, say, action }) => {
+    await ack();
+    // await say(`<@${body.user.id}> you lazy fuck`);
+    var value = action.selected_option.value;
+
+    if (value === 'value-motd') {
+        claimMOTD(say, body);
+    } else if (value === 'value-sotd') {
+        claimSOTD(say, body);
+    } else if (value === 'value-fd') {
+        claimFD(say, body);
+    } else {
+        claimANY(say, body);
+    }
 });
 
-app.action("meal-type-selected-take", async ({ body, ack, say, action }) => {
-  await ack();
-  // await say(`<@${body.user.id}> you lazy fuck`);
-  var value = action.selected_option.value;
-  
-  if (value === 'value-motd') {
-    claimMOTD(say, body);
-  } else if (value === 'value-sotd') {
-    claimSOTD(say, body);
-  } else if (value === 'value-fd') {
-    claimFD(say, body);
-  } else {
-    claimANY(say, body);
-  }
+app.action("meal-type-selected-give", async({ body, ack, say, action }) => {
+    await ack();
+    // await say(`<@${body.user.id}> you lazy fuck`);
+    var value = action.selected_option.value;
+
+    if (value === 'value-motd') {
+        giveMOTD(say, body);
+    } else if (value === 'value-sotd') {
+        giveSOTD(say, body);
+    } else if (value === 'value-fd') {
+        giveFD(say, body);
+    }
 });
 
-app.action("meal-type-selected-give", async ({ body, ack, say, action }) => {
-  await ack();
-  // await say(`<@${body.user.id}> you lazy fuck`);
-  var value = action.selected_option.value;
-  
-  if (value === 'value-motd') {
-    giveMOTD(say, body);
-  } else if (value === 'value-sotd') {
-    giveSOTD(say, body);
-  } else if (value === 'value-fd') {
-    giveFD(say, body);
-  } 
+app.message(/^(hi|hello|hey).*/, async({ context, say }) => {
+    // RegExp matches are inside of context.matches
+    const greeting = context.matches[0];
+
+    await say(`${greeting}, how are you?`);
 });
 
-app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
-  // RegExp matches are inside of context.matches
-  const greeting = context.matches[0];
+(async() => {
+    // Start your app
+    await app.start(process.env.PORT || 3000);
+    console.log("Port", process.env.PORT);
 
-  await say(`${greeting}, how are you?`);
-});
-
-(async () => {
-  // Start your app
-  await app.start(process.env.PORT || 3000);
-
-  console.log("⚡️ Bolt app is running!");
+    console.log("⚡️ Bolt app is running!");
 })();
