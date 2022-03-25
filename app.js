@@ -361,7 +361,10 @@ app.message("claim", async ({ event, say }) => {
 });
 
 app.message("export" | "Export"), async ({ context, say}) => {
-  await say(JSON.stringify(claimedMeals, null, 2));
+  await say(`in here`);
+  for (meal in claimedMeals) {
+    await say(JSON.stringify(meal, null, 2));
+  }
 }
 
 app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
