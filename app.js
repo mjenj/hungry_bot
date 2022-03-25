@@ -6,6 +6,7 @@ const app = new App({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     socketMode: true,
     appToken: process.env.SLACK_APP_TOKEN,
+    port: process.env.PORT || 3000
 });
 
 //Add code here
@@ -423,7 +424,7 @@ app.message(/^(hi|hello|hey).*/, async({ context, say }) => {
 
 (async() => {
     // Start your app
-    await app.start(process.env.PORT || 3000);
+    await app.start();
     console.log("Port", process.env.PORT);
 
     console.log("⚡️ Bolt app is running!");
