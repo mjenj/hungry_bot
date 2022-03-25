@@ -56,4 +56,17 @@ var total = ({
 })
 
 var d = JSON.stringify(total, null, 2);
-console.log(d);
+// console.log(d);
+
+avaidFd = ['a','b'];
+var fd = avaidFd.length;
+  var motd = avaidFd.length;
+  var sotd = avaidFd.length;
+  var unknown = avaidFd.length;
+  var anyAvailable = fd > 0 | motd > 0 | sotd > 0 | unknown > 0;
+  console.log(anyAvailable);
+
+  if (anyAvailable) {
+	console.log("bing");
+
+  }
