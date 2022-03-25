@@ -39,34 +39,60 @@ claimedMeals.push(meal);
 var c = JSON.stringify(claimedMeals, null, 2)
 // console.log(c);
 
-var option = [];
+console.log(availableOptionGenerator())
 
-var text = ({
-		  type: "plain_text",
-		  text: "MOTD",
-		  emoji: true,
-	  });
+  function availableOptionGenerator() {
+	var avaidFd = ['a','b'];
+	var fd = avaidFd.length;
+	  var motd = avaidFd.length;
+	  var sotd = avaidFd.length;
+	  var unknown = avaidFd.length;
+	  var anyAvailable = fd > 0 | motd > 0 | sotd > 0 | unknown > 0;
+  
+	var options = [];
+  
+	if (motd > 0) {
+	  options.push({
+		text: createOption("MOTD"),
+		value: "value-motd"
+	  })
+	}
+	if (sotd > 0) {
+	  options.push({
+		text: createOption("SOTD"),
+		value: "value-sotd"
+	  })
+	}
+	if (fd > 0) {
+	  options.push({
+		text: createOption("FD"),
+		value: "value-fd"
+	  })
+	}
+	if (unknown > 0) {
+	  options.push({
+		text: createOption("Lucky Packet"),
+		value: "value-unkown"
+	  })
+	}
+	if (anyAvailable) {
+	  options.push({
+		text: createOption("I'll take anything"),
+		value: "value-any"
+	  })
+	}
+	var final = ({
+	  options: options
+	})
+  
+	return JSON.stringify(final, null, 2);
+  }
 
-option.push({
-	text: text,
-	value: "abc"
-})
-var total = ({
-	options: option
-})
-
-var d = JSON.stringify(total, null, 2);
-// console.log(d);
-
-avaidFd = ['a','b'];
-var fd = avaidFd.length;
-  var motd = avaidFd.length;
-  var sotd = avaidFd.length;
-  var unknown = avaidFd.length;
-  var anyAvailable = fd > 0 | motd > 0 | sotd > 0 | unknown > 0;
-  console.log(anyAvailable);
-
-  if (anyAvailable) {
-	console.log("bing");
-
+  function createOption(title) {
+	var option = ({
+	  type: "plain_text",
+	  text: title,
+	  emoji: true,
+	});
+	return option;
   }

@@ -151,7 +151,7 @@ app.action("actionEat", async({ body, ack, say }) => {
     await ack();
     // await say(`<@${body.user.id}> you lazy fuck`);
     await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's, " + avaidFd.length + " FD's and " + avaidUknown.length + " Lucky Packets");
-    await say (availableOptionGenerator.stringify);
+    await say (availableOptionGenerator());
     await say({
         blocks: [{
             type: "section",
@@ -166,7 +166,7 @@ app.action("actionEat", async({ body, ack, say }) => {
                     text: "Options",
                     emoji: true,
                 },
-                availableOptionGenerator,
+                availableOptionGenerator(),
                 action_id: "meal-type-selected-take",
             },
         }, ],
@@ -259,7 +259,7 @@ app.action("meal-type-selected-give", async({ body, ack, say, action }) => {
     } else if (value === 'value-fd') {
         giveFD(say, body);
     } else if (value === 'value-uknown') {
-      giveUnkown(say, body, action);
+      giveUnknown(say, body, action);
     }
 });
 
@@ -295,6 +295,17 @@ function giveFD(say, body, action) {
       timeOut: ""
     });
     say("Thank you for your donation, you've saved a starving african");
+}
+
+function giveUnknown(say, body, action) {
+  avaidFd.push({
+    owner: body.user.id,
+    ownerName: `<@${body.user.id}>`,
+    type: "Uknown",
+    timeIn: action.action_ts,
+    timeOut: ""
+  });
+  say("Thank you for your donation, you've saved a starving african");
 }
 
 function claimMOTD(say, body, action) {
