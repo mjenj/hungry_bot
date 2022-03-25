@@ -303,6 +303,7 @@ app.message("purge", async ({ event, say }) => {
   claimedMeals = [];
 });
 
+
 app.message("claim", async ({ event, say }) => {
   await say("there are MOTD " + avaidMotd.length);
   await say("there are SOTD " + avaidSotd.length);
@@ -353,8 +354,10 @@ app.message("claim", async ({ event, say }) => {
             action_id: "claim_fd",
           },
         ],
-        text: `hungry?`,
-    });
+      },
+    ],
+    text: `hungry?`,
+  });
 });
 
 app.message("export" | "Export"), async ({ context, say}) => {
@@ -417,8 +420,10 @@ app.command("donate", async ({ event, say }) => {
             action_id: "donate_fd",
           },
         ],
-        text: `hungry?`,
-    });
+      },
+    ],
+    text: `hungry?`,
+  });
 });
 
 // MARK: Events
