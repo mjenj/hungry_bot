@@ -166,7 +166,7 @@ app.action("actionEat", async({ body, ack, say }) => {
                     text: "Options",
                     emoji: true,
                 },
-                availableOptionGenerator(),
+                availableOptionGenerator(){},
                 action_id: "meal-type-selected-take",
             },
         }, ],
