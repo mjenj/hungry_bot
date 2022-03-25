@@ -150,7 +150,8 @@ app.action("actionFeed", async({ body, ack, say }) => {
 app.action("actionEat", async({ body, ack, say }) => {
     await ack();
     // await say(`<@${body.user.id}> you lazy fuck`);
-    await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's, " + avaidFd.length + " FD's and " + avaidUknown.length + "Lucky Packets");
+    await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's, " + avaidFd.length + " FD's and " + avaidUknown.length + " Lucky Packets");
+    await say (availableOptionGenerator);
     await say({
         blocks: [{
             type: "section",
@@ -206,7 +207,7 @@ function availableOptionGenerator() {
       value: "value-unkown"
     })
   }
-  if (anyAvailable > 0) {
+  if (anyAvailable) {
     options.push({
       text: createOption("I'll take anything"),
       value: "value-any"
