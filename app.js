@@ -360,12 +360,13 @@ app.message("claim", async ({ event, say }) => {
   });
 });
 
-app.message("export" | "Export"), async ({ context, say}) => {
+app.message(`export`, async ({ context, say }) => {
   await say(`in here`);
   for (meal in claimedMeals) {
     await say(JSON.stringify(meal, null, 2));
   }
-}
+  await say(claimedMeals);
+});
 
 app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
   // RegExp matches are inside of context.matches
