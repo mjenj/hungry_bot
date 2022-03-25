@@ -85,7 +85,7 @@ console.log(availableOptionGenerator())
 	  options: options
 	})
   
-	var json = JSON.stringify(final, null, 2)
+	var json = JSON.stringify(options, null, 2)
 	return json.replace(/"([^"]+)":/g, '$1:');
   }
 

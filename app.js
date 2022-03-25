@@ -166,7 +166,7 @@ app.action("actionEat", async({ body, ack, say }) => {
                     text: "Options",
                     emoji: true,
                 },
-                availableOptionGenerator(){},
+                options: availableOptionGenerator(),
                 action_id: "meal-type-selected-take",
             },
         }, ],
@@ -213,10 +213,8 @@ function availableOptionGenerator() {
       value: "value-any"
     })
   }
-  var final = ({
-    options: options
-  })
-  var json = JSON.stringify(final, null, 2)
+ 
+  var json = JSON.stringify(options, null, 2)
   return json.replace(/"([^"]+)":/g, '$1:');
 }
 
