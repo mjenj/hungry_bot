@@ -231,7 +231,7 @@ function giveMOTD(say, body) {
       owner: body.user.id,
       ownerName: `<${body.user.id}>`,
       type: "MOTD",
-      timeIn: event.time,
+      timeIn: body.time,
       timeOut: ""
     });
     say("Thank you for your donation, you've saved a starving african");
@@ -387,7 +387,7 @@ app.message(`export`, async ({ context, say }) => {
   var combinedMeals = claimedMeals.concat(avaidMotd.concat(avaidSotd).concat(avaidSotd));
 
   if (combinedMeals.length > 0) {
-    var readableString = JSON.stringify(claimedMeals, null, 2);
+    var readableString = JSON.stringify(combinedMeals, null, 2);
     await say(readableString);
   } else {
     await say("Nothing to export");
