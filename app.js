@@ -299,7 +299,7 @@ app.message("purge", async({ event, say }) => {
 });
 
 app.message("setPurge", async({ event, say }) => {
-    cron.schedule('0 13 * * Mon,Tue,Wed,Thu,Fri', () => {
+    cron.schedule('0 18 * * Mon,Tue,Wed,Thu,Fri', () => {
         avaidMotd = [];
         avaidSotd = [];
         avaidFd = [];
