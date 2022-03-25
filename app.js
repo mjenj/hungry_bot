@@ -27,7 +27,8 @@ app.action("donate_motd", ({ event, say, body }) => {
     avaidMotd.push({
         owner: body.user.id,
         type: "MOTD",
-        time: event.time
+        timeIn: event.time,
+        timeOut: ""
     });
     console.log(avaidMotd);
 });
@@ -36,7 +37,8 @@ app.action("donate_sotd", ({ event, say, body }) => {
     avaidSotd.push({
         owner: body.user.id,
         type: "SOTD",
-        time: event.time
+        timeIn: event.time,
+        timeOut: ""
     });
     console.log(avaidSotd);
 });
@@ -45,7 +47,8 @@ app.action("donate_fd", ({ event, say, body }) => {
     avaidFd.push({
         owner: body.user.id,
         type: "FD",
-        time: event.time
+        timeIn: event.time,
+        timeOut: ""
     });
     console.log(avaidFd);
 });
@@ -54,6 +57,7 @@ app.action("claim_sotd", async({ event, say, body }) => {
     if (avaidSotd.length > 0) {
         var meal = avaidSotd.shift();
         meal["claimer"] = body.user.id;
+        meal["timeOut"] = event.time;
         await say("You got a SOTD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
     }
@@ -63,6 +67,7 @@ app.action("claim_motd", async({ event, say, body }) => {
     if (avaidMotd.length > 0) {
         var meal = avaidMotd.shift();
         meal["claimer"] = body.user.id;
+        meal["timeOut"] = event.time;
         await say("You got a MOTD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
     }
@@ -72,6 +77,7 @@ app.action("claim_fd", async({ event, say, body }) => {
     if (avaidFd.length > 0) {
         var meal = avaidFd.shift();
         meal["claimer"] = body.user.id;
+        meal["timeOut"] = event.time;
         await say("You got a FD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
     }
@@ -357,12 +363,9 @@ app.message("claim", async({ event, say }) => {
     });
 });
 
-app.message(`export`, async({ context, say }) => {
-    await say(`in here`);
-    for (meal in claimedMeals) {
-        await say(JSON.stringify(meal, null, 2));
-    }
-    await say(claimedMeals);
+app.message(`export`, async ({ context, say }) => {
+  var combinedMelas = claimedMeals.concat(avaidMotd.concat(avaidSotd).concat(avaidSotd));
+  await say(JSON.stringify(claimedMeals, null, 2));
 });
 
 app.message(/^(hi|hello|hey).*/, async({ context, say }) => {
