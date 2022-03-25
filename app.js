@@ -428,4 +428,4 @@ app.message(/^(hi|hello|hey).*/, async({ context, say }) => {
     console.log("Port", process.env.PORT);
 
     console.log("⚡️ Bolt app is running!");
-})();
+});
