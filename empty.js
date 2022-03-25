@@ -85,7 +85,8 @@ console.log(availableOptionGenerator())
 	  options: options
 	})
   
-	return JSON.stringify(final, null, 2);
+	var json = JSON.stringify(final, null, 2)
+	return json.replace(/"([^"]+)":/g, '$1:');
   }
 
   function createOption(title) {
