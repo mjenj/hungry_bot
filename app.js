@@ -229,7 +229,7 @@ app.action("meal-type-selected-give", async({ body, ack, say, action }) => {
 function giveMOTD(say, body) {
     avaidMotd.push({
       owner: body.user.id,
-      ownerName: `<${body.user.id}>`,
+      ownerName: `<@${body.user.id}>`,
       type: "MOTD",
       timeIn: body.time,
       timeOut: ""
@@ -240,7 +240,7 @@ function giveMOTD(say, body) {
 function giveSOTD(say, body) {
     avaidSotd.push({
       owner: body.user.id,
-      ownerName: `<${body.user.id}>`,
+      ownerName: `<@${body.user.id}>`,
       type: "SOTD",
       timeIn: body.time,
       timeOut: ""
@@ -251,7 +251,7 @@ function giveSOTD(say, body) {
 function giveFD(say, body) {
     avaidFd.push({
       owner: body.user.id,
-      ownerName: `<${body.user.id}>`,
+      ownerName: `<@${body.user.id}>`,
       type: "FD",
       timeIn: body.time,
       timeOut: ""
@@ -263,7 +263,7 @@ function claimMOTD(say, body) {
     if (avaidMotd.length > 0) {
         var meal = avaidMotd.shift();
         meal["claimer"] = body.user.id;
-        meal["claimerName"] = `<${body.user.id}>`,
+        meal["claimerName"] = `<@${body.user.id}>`,
         meal["timeOut"] = body.time;
         say("You got a MOTD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
@@ -274,7 +274,7 @@ function claimSOTD(say, body) {
     if (avaidSotd.length > 0) {
         var meal = avaidSotd.shift();
         meal["claimer"] = body.user.id;
-        meal["claimerName"] = `<${body.user.id}>`,
+        meal["claimerName"] = `<@${body.user.id}>`,
         meal["timeOut"] = body.time;
         say("You got a SOTD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
@@ -285,7 +285,7 @@ function claimFD(say, body) {
     if (avaidFd.length > 0) {
         var meal = avaidFd.shift();
         meal["claimer"] = body.user.id;
-        meal["claimerName"] = `<${body.user.id}>`,
+        meal["claimerName"] = `<@${body.user.id}>`,
         meal["timeOut"] = body.time;
         say("You got a FD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
