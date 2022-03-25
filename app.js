@@ -199,7 +199,9 @@ app.action("meal-type-selected-take", async({ body, ack, say, action }) => {
     await ack();
     // await say(`<@${body.user.id}> you lazy fuck`);
     var value = action.selected_option.value;
-
+    await say(action.stringify);
+    await say (body.stringify);
+    
     if (value === 'value-motd') {
         claimMOTD(say, body);
     } else if (value === 'value-sotd') {
@@ -217,7 +219,7 @@ app.action("meal-type-selected-give", async({ body, ack, say, action }) => {
     var value = action.selected_option.value;
 
     if (value === 'value-motd') {
-        giveMOTD(say, body);
+        giveMOTD(say, body, action.action_ts);
     } else if (value === 'value-sotd') {
         giveSOTD(say, body);
     } else if (value === 'value-fd') {
