@@ -23,7 +23,6 @@ var claimedMeals = [];
 
 // MARK: Actions
 app.action("donate_motd", ({ event, say, body }) => {
-<<<<<<< HEAD
   avaidMotd.push({
     owner: body.user.id,
     type: "MOTD",
@@ -48,29 +47,6 @@ app.action("donate_fd", ({ event, say, body }) => {
     time: event.time
   });
   console.log(avaidFd);
-=======
-    avaidMotd.push({
-        owner: body.user.id,
-        type: "MOTD",
-    });
-    console.log(avaidMotd);
-});
-
-app.action("donate_sotd", ({ event, say, body }) => {
-    avaidSotd.push({
-        owner: body.user.id,
-        type: "SOTD",
-    });
-    console.log(avaidSotd);
-});
-
-app.action("donate_fd", ({ event, say, body }) => {
-    avaidFd.push({
-        owner: body.user.id,
-        type: "FD",
-    });
-    console.log(avaidFd);
->>>>>>> b4602c6cc08d939421f6c8aec42dd4638fb9c4a4
 });
 
 app.action("claim_sotd", async({ event, say, body }) => {
@@ -319,7 +295,6 @@ function claimANY(say, body) {
     }
 }
 
-<<<<<<< HEAD
 // MARK: Message commands
 app.message("purge", async ({ event, say }) => {
   avaidMotd = [];
@@ -377,62 +352,11 @@ app.message("claim", async ({ event, say }) => {
             value: "click_me_123",
             action_id: "claim_fd",
           },
-=======
-app.message("purge", async({ event, say }) => {
-    avaidMotd = [];
-    avaidSotd = [];
-    avaidFd = [];
-    claimedMeals = [];
-});
-
-app.command("donate", async({ event, say }) => {
-    await say({
-        blocks: [{
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Donate MOTD",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "donate_motd",
-                }, ],
-            },
-            {
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Donate SOTD",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "donate_sotd",
-                }, ],
-            },
-            {
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Donate FD",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "donate_fd",
-                }, ],
-            },
->>>>>>> b4602c6cc08d939421f6c8aec42dd4638fb9c4a4
         ],
         text: `hungry?`,
     });
 });
 
-<<<<<<< HEAD
 app.message("export" | "Export"), async ({ context, say}) => {
   await say(JSON.stringify(claimedMeals, null, 2));
 }
@@ -492,52 +416,6 @@ app.command("donate", async ({ event, say }) => {
             value: "click_me_123",
             action_id: "donate_fd",
           },
-=======
-app.message("claim", async({ event, say }) => {
-    await say("there are MOTD " + avaidMotd.length);
-    await say("there are SOTD " + avaidSotd.length);
-    await say("there are FD " + avaidFd.length);
-    await say({
-        blocks: [{
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Claim MOTD",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "claim_motd",
-                }, ],
-            },
-            {
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Claim SOTD",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "claim_sotd",
-                }, ],
-            },
-            {
-                type: "actions",
-                elements: [{
-                    type: "button",
-                    text: {
-                        type: "plain_text",
-                        text: "Claim FD",
-                        emoji: true,
-                    },
-                    value: "click_me_123",
-                    action_id: "claim_fd",
-                }, ],
-            },
->>>>>>> b4602c6cc08d939421f6c8aec42dd4638fb9c4a4
         ],
         text: `hungry?`,
     });
@@ -578,159 +456,9 @@ app.event("app_home_opened", ({ event, say }) => {
     });
 });
 
-<<<<<<< HEAD
-(async () => {
-  // Start your app
-  await app.start(process.env.PORT || 3000);
-=======
-app.action("actionFeed", async({ body, ack, say }) => {
-    await ack();
-    await say({
-        blocks: [{
-            type: "section",
-            text: {
-                type: "mrkdwn",
-                text: "Thank you for feeding a hungry Skynamite with a: ",
-            },
-            accessory: {
-                type: "static_select",
-                placeholder: {
-                    type: "plain_text",
-                    text: "Options",
-                    emoji: true,
-                },
-                options: [{
-                        text: {
-                            type: "plain_text",
-                            text: "MOTD",
-                            emoji: true,
-                        },
-                        value: "value-motd",
-                    },
-                    {
-                        text: {
-                            type: "plain_text",
-                            text: "SOTD",
-                            emoji: true,
-                        },
-                        value: "value-sotd",
-                    },
-                    {
-                        text: {
-                            type: "plain_text",
-                            text: "FD",
-                            emoji: true,
-                        },
-                        value: "value-fd",
-                    },
-                ],
-                action_id: "meal-type-selected-give",
-            },
-        }, ],
-        text: "home",
-    });
-});
-
-app.action("actionEat", async({ body, ack, say }) => {
-    await ack();
-    // await say(`<@${body.user.id}> you lazy fuck`);
-    await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's and " + avaidFd.length + " FD's");
-    await say({
-        blocks: [{
-            type: "section",
-            text: {
-                type: "mrkdwn",
-                text: "Beggars CAN be choosers",
-            },
-            accessory: {
-                type: "static_select",
-                placeholder: {
-                    type: "plain_text",
-                    text: "Options",
-                    emoji: true,
-                },
-                options: [{
-                        text: {
-                            type: "plain_text",
-                            text: "MOTD",
-                            emoji: true,
-                        },
-                        value: "value-motd",
-                    },
-                    {
-                        text: {
-                            type: "plain_text",
-                            text: "SOTD",
-                            emoji: true,
-                        },
-                        value: "value-sotd",
-                    },
-                    {
-                        text: {
-                            type: "plain_text",
-                            text: "FD",
-                            emoji: true,
-                        },
-                        value: "value-fd",
-                    },
-                    {
-                        text: {
-                            type: "plain_text",
-                            text: "I'll take anything",
-                            emoji: true,
-                        },
-                        value: "value-any",
-                    },
-                ],
-                action_id: "meal-type-selected-take",
-            },
-        }, ],
-        text: "home",
-    });
-});
-
-app.action("meal-type-selected-take", async({ body, ack, say, action }) => {
-    await ack();
-    // await say(`<@${body.user.id}> you lazy fuck`);
-    var value = action.selected_option.value;
-
-    if (value === 'value-motd') {
-        claimMOTD(say, body);
-    } else if (value === 'value-sotd') {
-        claimSOTD(say, body);
-    } else if (value === 'value-fd') {
-        claimFD(say, body);
-    } else {
-        claimANY(say, body);
-    }
-});
-
-app.action("meal-type-selected-give", async({ body, ack, say, action }) => {
-    await ack();
-    // await say(`<@${body.user.id}> you lazy fuck`);
-    var value = action.selected_option.value;
-
-    if (value === 'value-motd') {
-        giveMOTD(say, body);
-    } else if (value === 'value-sotd') {
-        giveSOTD(say, body);
-    } else if (value === 'value-fd') {
-        giveFD(say, body);
-    }
-});
-
-app.message(/^(hi|hello|hey).*/, async({ context, say }) => {
-    // RegExp matches are inside of context.matches
-    const greeting = context.matches[0];
-
-    await say(`${greeting}, how are you?`);
-});
-
 (async() => {
     // Start your app
     await app.start();
     console.log("Port", process.env.PORT);
->>>>>>> b4602c6cc08d939421f6c8aec42dd4638fb9c4a4
-
     console.log("⚡️ Bolt app is running!");
 })();
