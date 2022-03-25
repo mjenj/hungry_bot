@@ -199,17 +199,15 @@ app.action("meal-type-selected-take", async({ body, ack, say, action }) => {
     await ack();
     // await say(`<@${body.user.id}> you lazy fuck`);
     var value = action.selected_option.value;
-    await say(action.stringify);
-    await say (body.stringify);
-    
+    await say(JSON.stringify(action, null, 2));
     if (value === 'value-motd') {
-        claimMOTD(say, body);
+        claimMOTD(say, body, action);
     } else if (value === 'value-sotd') {
-        claimSOTD(say, body);
+        claimSOTD(say, body, action);
     } else if (value === 'value-fd') {
-        claimFD(say, body);
+        claimFD(say, body, action);
     } else {
-        claimANY(say, body);
+        claimANY(say, body, action);
     }
 });
 
@@ -219,82 +217,82 @@ app.action("meal-type-selected-give", async({ body, ack, say, action }) => {
     var value = action.selected_option.value;
 
     if (value === 'value-motd') {
-        giveMOTD(say, body, action.action_ts);
+        giveMOTD(say, body, action);
     } else if (value === 'value-sotd') {
-        giveSOTD(say, body);
+        giveSOTD(say, body, action);
     } else if (value === 'value-fd') {
         giveFD(say, body);
     }
 });
 
 // MARK: Functions
-function giveMOTD(say, body) {
+function giveMOTD(say, body, action) {
     avaidMotd.push({
       owner: body.user.id,
       ownerName: `<@${body.user.id}>`,
       type: "MOTD",
-      timeIn: body.time,
+      timeIn: action.action_ts,
       timeOut: ""
     });
     say("Thank you for your donation, you've saved a starving african");
 }
 
-function giveSOTD(say, body) {
+function giveSOTD(say, body, action) {
     avaidSotd.push({
       owner: body.user.id,
       ownerName: `<@${body.user.id}>`,
       type: "SOTD",
-      timeIn: body.time,
+      timeIn: action.action_ts,
       timeOut: ""
     });
     say("Thank you for your donation, you've saved a starving african");
 }
 
-function giveFD(say, body) {
+function giveFD(say, body, action) {
     avaidFd.push({
       owner: body.user.id,
       ownerName: `<@${body.user.id}>`,
       type: "FD",
-      timeIn: body.time,
+      timeIn: action.action_ts,
       timeOut: ""
     });
     say("Thank you for your donation, you've saved a starving african");
 }
 
-function claimMOTD(say, body) {
+function claimMOTD(say, body, action) {
     if (avaidMotd.length > 0) {
         var meal = avaidMotd.shift();
         meal["claimer"] = body.user.id;
         meal["claimerName"] = `<@${body.user.id}>`,
-        meal["timeOut"] = body.time;
+        meal["timeOut"] = action.action_ts;
         say("You got a MOTD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
     }
 }
 
-function claimSOTD(say, body) {
+function claimSOTD(say, body, action) {
     if (avaidSotd.length > 0) {
         var meal = avaidSotd.shift();
         meal["claimer"] = body.user.id;
         meal["claimerName"] = `<@${body.user.id}>`,
-        meal["timeOut"] = body.time;
+        meal["timeOut"] = action.action_ts;
         say("You got a SOTD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
     }
 }
 
-function claimFD(say, body) {
+function claimFD(say, body, action) {
     if (avaidFd.length > 0) {
         var meal = avaidFd.shift();
         meal["claimer"] = body.user.id;
         meal["claimerName"] = `<@${body.user.id}>`,
-        meal["timeOut"] = body.time;
+        meal["timeOut"] = action.action_ts;
         say("You got a FD from " + `<@${meal.owner}>`);
         claimedMeals.push(meal);
     }
 }
 
-function claimANY(say, body) {
+function claimANY(say, body, action) {
     var fd = avaidFd.length;
     var motd = avaidMotd.length;
     var sotd = avaidSotd.length;
@@ -307,11 +305,11 @@ function claimANY(say, body) {
     if (available.length > 0) {
         var choice = Math.floor(Math.random()) * available.length - 1;
         if (available[choice] === 'motd') {
-            claimMOTD(say, body);
+            claimMOTD(say, body, action);
         } else if (available[choice] === 'sotd') {
-            claimSOTD(say, body);
+            claimSOTD(say, body, action);
         } else if (available[choice] === 'fd') {
-            claimFD(say, body);
+            claimFD(say, body, action);
         }
     } else {
         say("Oh no! No meals available right now, try again later ");
