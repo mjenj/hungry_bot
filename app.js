@@ -22,73 +22,6 @@ var avaidUknown = [];
 var claimedMeals = [];
 var hasSeenMessageToday = false;
 
-// MARK: Actions
-// app.action("donate_motd", ({ event, say, body }) => {
-//     avaidMotd.push({
-//         owner: body.user.id,
-//         ownerName: `<${body.user.id}>`,
-//         type: "MOTD",
-//         timeIn: event.time,
-//         timeOut: ""
-//     });
-//     console.log(avaidMotd);
-// });
-
-// app.action("donate_sotd", ({ event, say, body }) => {
-//     avaidSotd.push({
-//         owner: body.user.id,
-//         ownerName: `<${body.user.id}>`,
-//         type: "SOTD",
-//         timeIn: event.time,
-//         timeOut: ""
-//     });
-//     console.log(avaidSotd);
-// });
-
-// app.action("donate_fd", ({ event, say, body }) => {
-//     avaidFd.push({
-//         owner: body.user.id,
-//         ownerName: `<${body.user.id}>`,
-//         type: "FD",
-//         timeIn: event.time,
-//         timeOut: ""
-//     });
-//     console.log(avaidFd);
-// });
-
-// app.action("claim_sotd", async({ event, say, body }) => {
-//     if (avaidSotd.length > 0) {
-//         var meal = avaidSotd.shift();
-//         meal["claimer"] = body.user.id;
-//         meal["claimerName"] = `<${body.user.id}>`,
-//         meal["timeOut"] = event.time;
-//         await say("You got a SOTD from " + `<@${meal.owner}>`);
-//         claimedMeals.push(meal);
-//     }
-// });
-
-// app.action("claim_motd", async({ event, say, body }) => {
-//     if (avaidMotd.length > 0) {
-//         var meal = avaidMotd.shift();
-//         meal["claimer"] = body.user.id;
-//         meal["claimerName"] = `<${body.user.id}>`,
-//         meal["timeOut"] = event.time;
-//         await say("You got a MOTD from " + `<@${meal.owner}>`);
-//         claimedMeals.push(meal);
-//     }
-// });
-
-// app.action("claim_fd", async({ event, say, body }) => {
-//     if (avaidFd.length > 0) {
-//         var meal = avaidFd.shift();
-//         meal["claimer"] = body.user.id;
-//         meal["claimerName"] = `<${body.user.id}>`,
-//         meal["timeOut"] = event.time;
-//         await say("You got a FD from " + `<@${meal.owner}>`);
-//         claimedMeals.push(meal);
-//     }
-// });
-
 app.action("actionFeed", async ({ body, ack, say }) => {
     await ack();
     await say({
@@ -148,7 +81,8 @@ app.action("actionFeed", async ({ body, ack, say }) => {
 app.action("actionEat", async ({ body, ack, say }) => {
     await ack();
     // await say(`<@${body.user.id}> you lazy fuck`);
-    await say("There are " + avaidMotd.length + " MOTD's, " + avaidSotd.length + " SOTD's, " + avaidFd.length + " FD's and " + avaidUknown.length + " Lucky Packets");
+    var meals = MealService.GetAvaidableMeals();
+    await say("There are " + meals.avaidMotd.length + " MOTD's, " + meals.avaidSotd.length + " SOTD's, " + meals.avaidFd.length + " FD's and " + meals.avaidUnk.length + " Lucky Packets");
     await say(availableOptionGenerator());
     await say({
         blocks: [{
@@ -173,10 +107,11 @@ app.action("actionEat", async ({ body, ack, say }) => {
 });
 
 function availableOptionGenerator() {
-    var fd = avaidFd.length;
-    var motd = avaidMotd.length;
-    var sotd = avaidSotd.length;
-    var unknown = avaidUknown.length;
+    var meals = MealService.GetAvaidableMeals();
+    var fd = meals.avaidFd.length;
+    var motd = meals.avaidMotd.length;
+    var sotd = meals.avaidSotd.length;
+    var unknown = meals.avaidUknown.length;
     var anyAvailable = fd > 0 | motd > 0 | sotd > 0 | unknown > 0;
 
     var options = [];
@@ -263,96 +198,34 @@ app.action("meal-type-selected-give", async ({ body, ack, say, action }) => {
     var value = action.selected_option.value;
 
     if (value === 'value-motd') {
-        meal.type="motd";
+        meal.type = "motd";
     } else if (value === 'value-sotd') {
-        meal.type="sotd";
+        meal.type = "sotd";
     } else if (value === 'value-fd') {
-        meal.type="fd";
+        meal.type = "fd";
     } else if (value === 'value-uknown') {
-        meal.type="unk";
+        meal.type = "unk";
     }
     MealService.DonateMeal(meal);
     say("Thank you for your donation, you've saved a starving african");
 });
 
 app.message("purge", async ({ event, say }) => {
-    avaidMotd = [];
-    avaidSotd = [];
-    avaidFd = [];
-    claimedMeals = [];
+    MealService.ClearMeals();
     hasSeenMessageToday = false;
 });
 
 app.message("setPurge", async ({ event, say }) => {
     cron.schedule('0 18 * * Mon,Tue,Wed,Thu,Fri', () => {
-        avaidMotd = [];
-        avaidSotd = [];
-        avaidFd = [];
-        claimedMeals = [];
+        MealService.ClearMeals();
         hasSeenMessageToday = false;
     });
 });
 
-
-app.message("claim", async ({ event, say }) => {
-    await say("there are MOTD " + avaidMotd.length);
-    await say("there are SOTD " + avaidSotd.length);
-    await say("there are FD " + avaidFd.length);
-    await say({
-        blocks: [{
-            type: "actions",
-            elements: [{
-                type: "button",
-                text: {
-                    type: "plain_text",
-                    text: "Claim MOTD",
-                    emoji: true,
-                },
-                value: "click_me_123",
-                action_id: "claim_motd",
-            },],
-        },
-        {
-            type: "actions",
-            elements: [{
-                type: "button",
-                text: {
-                    type: "plain_text",
-                    text: "Claim SOTD",
-                    emoji: true,
-                },
-                value: "click_me_123",
-                action_id: "claim_sotd",
-            },],
-        },
-        {
-            type: "actions",
-            elements: [{
-                type: "button",
-                text: {
-                    type: "plain_text",
-                    text: "Claim FD",
-                    emoji: true,
-                },
-                value: "click_me_123",
-                action_id: "claim_fd",
-            },],
-        },
-        ],
-        text: `hungry?`,
-    });
-});
-
 app.message(`export`, async ({ context, say }) => {
-    var combinedMeals = claimedMeals.concat(avaidMotd.concat(avaidSotd).concat(avaidSotd));
-
-    if (combinedMeals.length > 0) {
-        var readableString = JSON.stringify(combinedMeals, null, 2);
-        await say(readableString);
-    } else {
-        await say("Nothing to export");
-    }
-
+    var combinedMeals = MealService.GetMeals();
+    var readableString = JSON.stringify(combinedMeals, null, 2);
+    await say(readableString);
 });
 
 app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
@@ -360,54 +233,6 @@ app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
     const greeting = context.matches[0];
 
     await say(`${greeting}, how are you?`);
-});
-
-// MARK: Commands
-
-app.command("donate", async ({ event, say }) => {
-    await say({
-        blocks: [{
-            type: "actions",
-            elements: [{
-                type: "button",
-                text: {
-                    type: "plain_text",
-                    text: "Donate MOTD",
-                    emoji: true,
-                },
-                value: "click_me_123",
-                action_id: "donate_motd",
-            },],
-        },
-        {
-            type: "actions",
-            elements: [{
-                type: "button",
-                text: {
-                    type: "plain_text",
-                    text: "Donate SOTD",
-                    emoji: true,
-                },
-                value: "click_me_123",
-                action_id: "donate_sotd",
-            },],
-        },
-        {
-            type: "actions",
-            elements: [{
-                type: "button",
-                text: {
-                    type: "plain_text",
-                    text: "Donate FD",
-                    emoji: true,
-                },
-                value: "click_me_123",
-                action_id: "donate_fd",
-            },],
-        },
-        ],
-        text: `hungry?`,
-    });
 });
 
 // MARK: Events
